@@ -49,16 +49,13 @@
 ## 🚀 Запуск проекта
 
 ```bash
-git clone https://github.com/Vvyache/The_final_project_Silant.git
-cd The_final_project_Silant
+git clone https://github.com/EugeneMorrison/Final_Cut.git
 
 py -m venv venv
 venv\scripts\activate
 
-cd silant-master
 pip install -r requirements.txt
 
-cd si_lant
 py manage.py runserver
 
 
@@ -72,5 +69,4 @@ py manage.py runserver
 🔑 Доступы для ролей
 Данные для входа пользователей различных ролей хранятся в файле users.txt.
 
-<p align="center"> <img src="https://img.shields.io/badge/Tech-Django-green" alt="Django Badge" /> <img src="https://img.shields.io/badge/Language-Python-blue" alt="Python Badge" /> <img src="https://img.shields.io/badge/Status-Production-brightgreen" alt="Status Badge" /> </p>
 Проект демонстрирует реализацию ролевой модели доступа, управление жизненным циклом техники и интеграцию сервисных процессов в едином веб-приложении.
