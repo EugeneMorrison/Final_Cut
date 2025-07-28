@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-12 my-4">
+        <div class="Equipmentd-new p-4" style="background-color: #EBE6D6; border-radius: 12px;">
+            <div class="mb-3 d-flex gap-2">
+                <a href="/Service" class="btn btn-primary" style="background-color: #163E6C; border: none; border-radius: 8px;">Назад</a>
+                {% if perms.silant.change_Service %}
+                    <a href="/Service/edit/{{ Service.pk }}" class="btn btn-info" style="border-radius: 8px;">Редактировать</a>
+                {% endif %}
+                {% if perms.silant.delete_Service %}
+                    <a href="/Service/delete/{{ Service.pk }}" class="btn btn-danger" style="border-radius: 8px;">Удалить</a>
+                {% endif %}
+            </div>
+
+            <h4 class="mb-4" style="font-weight: 600; text-align: center;">Данные ТО</h4>
+            <div class="table-responsive">
+                <table class="table table-hover" style="background: white; border-radius: 8px; overflow: hidden;">
+                    <tbody>
+                        <tr><td><strong>Зав. № машины:</strong></td><td>{{ Service.Equipment.vin }}</td></tr>
+                        <tr>
+                            <td><strong>Сервисная организация:</strong></td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#service_company" style="text-decoration: none; font-weight: 600; color: #163E6C;">
+                                    {{ Service.service_company.name }}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Вид ТО:</strong></td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#Service_type" style="text-decoration: none; font-weight: 600; color: #163E6C;">
+                                    {{ Service.Service_type.name }}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr><td><strong>Дата проведения ТО:</strong></td><td>{{ Service.Service_date }}</td></tr>
+                        <tr><td><strong>Наработка мотто/часов:</strong></td><td>{{ Service.operating_time }}</td></tr>
+                        <tr><td><strong>Номер заказа-наряда:</strong></td><td>{{ Service.order }}</td></tr>
+                        <tr><td><strong>Дата заказа-наряда:</strong></td><td>{{ Service.order_date }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Модальные окна -->
+            <div class="modal fade" tabindex="-1" id="service_company" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content p-3">
+                        <div class="modal-body">
+                            <p>Описание из справочника:</p>
+                            <p>
+                                {% if Service.service_company.description %}
+                                    {{ Service.service_company.description }}
+                                {% else %}
+                                    Описание отсутствует
+                                {% endif %}
+                            </p>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 6px;">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" tabindex="-1" id="Service_type" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content p-3">
+                        <div class="modal-body">
+                            <p>Описание из справочника:</p>
+                            <p>
+                                {% if Service.Service_type.description %}
+                                    {{ Service.Service_type.description }}
+                                {% else %}
+                                    Описание отсутствует
+                                {% endif %}
+                            </p>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 6px;">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

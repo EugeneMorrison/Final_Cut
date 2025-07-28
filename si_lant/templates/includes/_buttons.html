@@ -1,0 +1,11 @@
+<div class="mb-3">
+    <a href="{{ back_url }}" class="btn btn-primary">Назад</a>
+    
+    {% if perms.silant.change_Service and edit_url %}
+        <a href="{{ edit_url }}" class="btn btn-info">Редактировать</a>
+    {% endif %}
+    
+    {% if perms.silant.delete_Service and delete_url %}
+        <a href="{{ delete_url }}" class="btn btn-danger">Удалить</a>
+    {% endif %}
+</div>

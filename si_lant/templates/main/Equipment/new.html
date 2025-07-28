@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block content %}
+    <h4 class="text-center">Параметры машины:</h4>
+    <div class="col-12 col-md-6 offset-md-3 mt-3">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <input type="text" name="vin" class="form-control" placeholder="Заводской номер"
+                       value="{{ form.vin.value|default_if_none:'' }}">
+                {% if form.vin.errors %}
+                    <div class="text-danger">{{ form.vin.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <select name="vehicle_model" class="form-control">
+                    <option disabled {% if not form.vehicle_model.value %}selected{% endif %}>Модель техники</option>
+                    {% for vehicle_model in vehicle_models %}
+                        <option value="{{ vehicle_model.pk }}" 
+                            {% if vehicle_model.pk|stringformat:"s" == form.vehicle_model.value|stringformat:"s" %}selected{% endif %}>
+                            {{ vehicle_model.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.vehicle_model.errors %}
+                    <div class="text-danger">{{ form.vehicle_model.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <select name="engine_model" class="form-control">
+                    <option disabled {% if not form.engine_model.value %}selected{% endif %}>Модель двигателя</option>
+                    {% for engine_model in engine_models %}
+                        <option value="{{ engine_model.pk }}"
+                            {% if engine_model.pk|stringformat:"s" == form.engine_model.value|stringformat:"s" %}selected{% endif %}>
+                            {{ engine_model.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.engine_model.errors %}
+                    <div class="text-danger">{{ form.engine_model.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="engine_number" class="form-control" placeholder="Номер двигателя"
+                       value="{{ form.engine_number.value|default_if_none:'' }}">
+                {% if form.engine_number.errors %}
+                    <div class="text-danger">{{ form.engine_number.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <select name="transmission_model" class="form-control">
+                    <option disabled {% if not form.transmission_model.value %}selected{% endif %}>Модель трансмиссии</option>
+                    {% for transmission_model in transmission_models %}
+                        <option value="{{ transmission_model.pk }}"
+                            {% if transmission_model.pk|stringformat:"s" == form.transmission_model.value|stringformat:"s" %}selected{% endif %}>
+                            {{ transmission_model.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.transmission_model.errors %}
+                    <div class="text-danger">{{ form.transmission_model.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="transmission_number" class="form-control" placeholder="Номер трансмиссии"
+                       value="{{ form.transmission_number.value|default_if_none:'' }}">
+                {% if form.transmission_number.errors %}
+                    <div class="text-danger">{{ form.transmission_number.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <select name="drive_axle" class="form-control">
+                    <option disabled {% if not form.drive_axle.value %}selected{% endif %}>Модель ведущего моста</option>
+                    {% for drive_axle in drive_axles %}
+                        <option value="{{ drive_axle.pk }}"
+                            {% if drive_axle.pk|stringformat:"s" == form.drive_axle.value|stringformat:"s" %}selected{% endif %}>
+                            {{ drive_axle.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.drive_axle.errors %}
+                    <div class="text-danger">{{ form.drive_axle.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="drive_axle_number" class="form-control" placeholder="Номер ведущего моста"
+                       value="{{ form.drive_axle_number.value|default_if_none:'' }}">
+                {% if form.drive_axle_number.errors %}
+                    <div class="text-danger">{{ form.drive_axle_number.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <select name="steering_axle" class="form-control">
+                    <option disabled {% if not form.steering_axle.value %}selected{% endif %}>Модель управляемого моста</option>
+                    {% for steering_axle in steering_axles %}
+                        <option value="{{ steering_axle.pk }}"
+                            {% if steering_axle.pk|stringformat:"s" == form.steering_axle.value|stringformat:"s" %}selected{% endif %}>
+                            {{ steering_axle.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.steering_axle.errors %}
+                    <div class="text-danger">{{ form.steering_axle.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="steering_axle_number" class="form-control" placeholder="Номер управляемого моста"
+                       value="{{ form.steering_axle_number.value|default_if_none:'' }}">
+                {% if form.steering_axle_number.errors %}
+                    <div class="text-danger">{{ form.steering_axle_number.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="supply_agreement" class="form-control" placeholder="Договор поставки №, дата."
+                       value="{{ form.supply_agreement.value|default_if_none:'' }}">
+                {% if form.supply_agreement.errors %}
+                    <div class="text-danger">{{ form.supply_agreement.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input type="date" name="shipment_date" class="form-control" value="{{ form.shipment_date.value|default_if_none:'' }}">
+                {% if form.shipment_date.errors %}
+                    <div class="text-danger">{{ form.shipment_date.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="consignee" class="form-control" placeholder="Грузополучатель"
+                       value="{{ form.consignee.value|default_if_none:'' }}">
+                {% if form.consignee.errors %}
+                    <div class="text-danger">{{ form.consignee.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <textarea rows="2" name="delivery_address" class="form-control" placeholder="Адрес поставки (эксплуатации)">{{ form.delivery_address.value }}</textarea>
+                {% if form.delivery_address.errors %}
+                    <div class="text-danger">{{ form.delivery_address.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <textarea rows="4" name="equipment" class="form-control" placeholder="Комплектация (доп. опции)">{{ form.equipment.value }}</textarea>
+                {% if form.equipment.errors %}
+                    <div class="text-danger">{{ form.equipment.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <select name="user" class="form-control">
+                    <option disabled {% if not form.user.value %}selected{% endif %}>Клиент</option>
+                    {% for user in users %}
+                        <option value="{{ user.pk }}"
+                            {% if user.pk|stringformat:"s" == form.user.value|stringformat:"s" %}selected{% endif %}>
+                            {{ user.last_name }} {{ user.first_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.user.errors %}
+                    <div class="text-danger">{{ form.user.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <select name="service_company" class="form-control">
+                    <option disabled {% if not form.service_company.value %}selected{% endif %}>Сервисная организация</option>
+                    {% for service_company in service_companies %}
+                        <option value="{{ service_company.pk }}"
+                            {% if service_company.pk|stringformat:"s" == form.service_company.value|stringformat:"s" %}selected{% endif %}>
+                            {{ service_company.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if form.service_company.errors %}
+                    <div class="text-danger">{{ form.service_company.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+                <a class="btn btn-info" href="/user_index">Отмена</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

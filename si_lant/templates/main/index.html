@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container my-5">
+<!-- Меню -->
+<div class="d-flex justify-content-around mb-3">
+    <a href="{% url 'equipment_list' %}" 
+       class="pt-0 h3 text-uppercase nav-link {% if request.resolver_match.url_name == 'equipment_list' or '/Equipments/' in request.path %}font-weight-bold text-info{% else %}text-dark{% endif %}">
+       машины
+    </a>
+    <a href="{% url 'Service-list' %}" 
+       class="pt-0 h3 text-uppercase nav-link {% if request.resolver_match.url_name == 'Service-list' or '/Service/' in request.path %}font-weight-bold text-info{% else %}text-dark{% endif %}">
+       то
+    </a>
+    <a href="{% url 'Claim-list' %}" 
+       class="pt-0 h3 text-uppercase nav-link {% if request.resolver_match.url_name == 'Claim-list' or '/Claims/' in request.path %}font-weight-bold text-info{% else %}text-dark{% endif %}">
+       рекламации
+    </a>
+</div>
+    <!-- Заголовок -->
+    <h2 class="text-center mb-4" style="color:#163E6C;">
+        Проверьте комплектацию и характеристики техники <span style="color:#D20A11;">Силант</span>
+    </h2>
+
+    <!-- Форма поиска -->
+    <div class="Equipmentd p-4 shadow-sm">
+        <form method="POST" class="row g-3 justify-content-center">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <input type="text" name="vin" required class="form-control"
+                       placeholder="Введите заводской номер">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn w-100" style="background:#D20A11; color:white;">
+                    Найти
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Результат поиска -->
+    {% if Equipments %}
+        <div class="mt-5">
+            <h4 class="text-center mb-4" style="color:#163E6C;">Результаты поиска</h4>
+            {% for Equipment in Equipments %}
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr><th>Заводской номер:</th><td>{{ Equipment.vin }}</td></tr>
+                            <tr><th>Модель техники:</th>
+                                <td>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#vehicle_model_{{Equipment.id}}">
+                                        {{ Equipment.vehicle_model.name }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr><th>Модель двигателя:</th>
+                                <td>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#engine_model_{{Equipment.id}}">
+                                        {{ Equipment.engine_model.name }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr><th>Зав. № двигателя:</th><td>{{ Equipment.engine_number }}</td></tr>
+                            <tr><th>Модель трансмиссии:</th>
+                                <td>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#transmission_model_{{Equipment.id}}">
+                                        {{ Equipment.transmission_model.name }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr><th>Зав. № трансмиссии:</th><td>{{ Equipment.transmission_number }}</td></tr>
+                            <tr><th>Модель ведущего моста:</th>
+                                <td>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#drive_axle_model_{{Equipment.id}}">
+                                        {{ Equipment.drive_axle.name }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr><th>Зав. № ведущего моста:</th><td>{{ Equipment.drive_axle_number }}</td></tr>
+                            <tr><th>Модель управляемого моста:</th>
+                                <td>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#steerable_axle_model_{{Equipment.id}}">
+                                        {{ Equipment.steering_axle.name }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr><th>Зав. № управляемого моста:</th><td>{{ Equipment.steering_axle_number }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Модалки -->
+                {% include 'partials/modal.html' with Equipment=Equipment %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

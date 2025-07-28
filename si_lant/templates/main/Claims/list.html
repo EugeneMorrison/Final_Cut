@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+    <div class="col-12 col-md-12 mt-3">
+        <div class="Equipmentd-new p-4">
+            <div class="d-flex justify-content-around flex-wrap gap-3 mb-3">
+                <a href="/Equipments" class="pt-0 h3 text-uppercase nav-link {% if request.path|slice:":11" == '/Equipments' %}font-weight-bold text-info{% else %}text-dark{% endif %}">машины</a>
+                <a href="/Service" class="pt-0 h3 text-uppercase nav-link {% if request.path|slice:":12" == '/Service' %}font-weight-bold text-info{% else %}text-dark{% endif %}">то</a>
+                <a href="/Claims" class="pt-0 h3 text-uppercase nav-link {% if request.path|slice:":12" == '/Claims' %}font-weight-bold text-info{% else %}text-dark{% endif %}">рекламации</a>
+            </div>
+
+            <h4 class="text-center my-3">Информация о рекламациях вашей техники:</h4>
+
+            <!-- Форма фильтрации -->
+            <form method="GET" class="mb-4">
+                <div class="d-flex flex-wrap gap-3 align-items-end">
+                    <div>
+                        <label class="select_name" for="filter_sc">Сервисная компания</label>
+                        <select id="filter_sc" name="sc" class="form-control">
+                            <option value="">Все</option>
+                            {% for item in service_company %}
+                                {% if item %}
+                                    <option value="{{ item }}" {% if request.GET.sc == item %}selected{% endif %}>{{ item }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="select_name" for="filter_fn">Узел отказа</label>
+                        <select id="filter_fn" name="fn" class="form-control">
+                            <option value="">Все</option>
+                            {% for item in failure_node %}
+                                {% if item %}
+                                    <option value="{{ item }}" {% if request.GET.fn == item %}selected{% endif %}>{{ item }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="select_name" for="filter_rm">Способ восстановления</label>
+                        <select id="filter_rm" name="rm" class="form-control">
+                            <option value="">Все</option>
+                            {% for item in recovery_method %}
+                                {% if item %}
+                                    <option value="{{ item }}" {% if request.GET.rm == item %}selected{% endif %}>{{ item }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary">Применить</button>
+                        <a href="/Claims?clear=clear" class="btn btn-secondary">Сбросить</a>
+                        <a href="/Claims" class="btn btn-outline-info">Показать все</a>
+                    </div>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered text-center align-middle">
+                    <thead class="thead-light">
+                        <tr>
+                            <th><a href="?order_by=date_of_refusal{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Дата отказа</th>
+                            <th><a href="?order_by=operating_time{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Наработка, м/час</th>
+                            <th><a href="?order_by=failure_node{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Узел отказа</th>
+                            <th><a href="?order_by=denial_type{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Описание отказа</th>
+                            <th><a href="?order_by=recovery_method{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Способ восстановления</th>
+                            <th><a href="?order_by=used_details{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сortировать">&#9650;</a> Используемые запасные части</th>
+                            <th><a href="?order_by=date_of_restoration{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Дата восстановления</th>
+                            <th><a href="?order_by=equipment_downtime{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Время простоя техники</th>
+                            <th><a href="?order_by=equipment{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Машина</th>
+                            <th><a href="?order_by=service_company{% if request.GET.sc %}&sc={{ request.GET.sc }}{% endif %}{% if request.GET.fn %}&fn={{ request.GET.fn }}{% endif %}{% if request.GET.rm %}&rm={{ request.GET.rm }}{% endif %}" title="Сортировать">&#9650;</a> Сервисная компания</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for Claim in Claims %}
+                        <tr>
+                            <td>{{ Claim.date_of_refusal|date:"d.m.Y" }}</td>
+                            <td>{{ Claim.operating_time }}</td>
+                            <td>{{ Claim.failure_node }}</td>
+                            <td>{{ Claim.denial_type }}</td>
+                            <td>{{ Claim.recovery_method }}</td>
+                            <td>{{ Claim.used_details }}</td>
+                            <td>{{ Claim.date_of_restoration|date:"d.m.Y" }}</td>
+                            <td>{{ Claim.equipment_downtime }}</td>
+                            <td>{{ Claim.equipment.vin }}</td>
+                            <td>{{ Claim.service_company.name }}</td>
+                            <td>
+                                <a href="/Claims/{{ Claim.pk }}" class="btn btn-info btn-sm">Подробнее</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="11" class="text-center text-muted">Нет данных для отображения</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-3">
+                {% if request.user|has_group:"service" or request.user|has_group:"manager" or request.user|has_group:"admin" %}
+                    <a class="btn btn-primary" href="/Claims/new">Добавить новую запись о рекламации</a>
+                {% endif %}
+                {% if request.user|has_group:"manager" or request.user|has_group:"admin" %}
+                    <a class="btn btn-primary" href="/lookups" role="button">Редактор справочников</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Функция для быстрого сброса фильтров
+    function clearFilters() {
+        document.getElementById('filter_sc').value = '';
+        document.getElementById('filter_fn').value = '';
+        document.getElementById('filter_rm').value = '';
+        window.location.href = '/Claims?clear=clear';
+    }
+    
+    // Альтернативный способ - через кнопку "Показать все"
+    function showAll() {
+        window.location.href = '/Claims?clear=clear';
+    }
+    </script>
+{% endblock content %}

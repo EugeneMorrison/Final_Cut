@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+    {% if request.user|has_group:"manager" or request.user|has_group:"admin" %}
+        <div class="text-center mt-5">
+            <h4 class="mb-4" style="font-weight: 600;">Справочники раздела "Машины"</h4>
+            <div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/vehicle_models" role="button">Модель техники</a>
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/engine_models" role="button">Модель двигателя</a>
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/transmission_models" role="button">Модель трансмиссии</a>
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/drive_axles" role="button">Модель ведущего моста</a>
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/steering_axles" role="button">Модель управляемого моста</a>
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/service_companies" role="button">Сервисная организация</a>
+            </div>
+
+            <h4 class="mb-4" style="font-weight: 600;">Справочник раздела "ТО"</h4>
+            <div class="mb-4">
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/Service_types" role="button">Вид ТО</a>
+            </div>
+
+            <h4 class="mb-4" style="font-weight: 600;">Справочники раздела "Рекламации"</h4>
+            <div class="d-flex justify-content-center gap-3 mb-5 flex-wrap">
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/denial_types" role="button">Характер отказа</a>
+                <a class="btn btn-info px-4 py-2" style="min-width: 270px; border-radius: 8px;" href="/lookups/recovery_methods" role="button">Способ восстановления</a>
+            </div>
+
+            <div>
+                <a href="/user_index" class="btn btn-primary" style="border-radius: 8px; min-width: 150px; background-color: #163E6C; border: none;">Назад</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

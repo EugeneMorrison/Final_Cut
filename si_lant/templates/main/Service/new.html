@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+<h4 class="text-center">Новая запись ТО</h4>
+<div class="col-12 col-md-6 offset-md-3 mt-3">
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Пожалуйста, исправьте ошибки:</strong>
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Машина -->
+        <div class="form-group">
+            <label for="{{ form.equipment.id_for_label }}">Машина</label>
+            {{ form.equipment }}
+        </div>
+
+        <!-- Сервисная компания -->
+		<div class="form-group"> 
+			<label for="service_company">Сервисная компания</label>
+			<select name="service_company" id="service_company" class="form-control">
+				<option value="" disabled selected>Выберите компанию</option>
+				{% for sc in service_companies %}
+					<option value="{{ sc.pk }}">{{ sc.name }}</option>
+				{% empty %}
+					<option disabled>Нет доступных компаний</option>
+					<option value="2">самостоятельно</option>
+					<option value="1">ООО Промышленная техника</option>
+					<option value="3">ООО Силант</option>
+					<option value="3">ООО ФНС</option>
+				{% endfor %}
+			</select>
+		</div>
+
+        <!-- Вид ТО -->
+        <div class="form-group">
+            <label for="{{ form.Service_type.id_for_label }}">Вид ТО</label>
+            {{ form.Service_type }}
+        </div>
+
+        <!-- Дата проведения ТО -->
+        <div class="form-group">
+            <label for="{{ form.Service_date.id_for_label }}">Дата проведения ТО</label>
+            {{ form.Service_date }}
+        </div>
+
+        <!-- Наработка -->
+        <div class="form-group">
+            <label for="{{ form.operating_time.id_for_label }}">Наработка, м/час</label>
+            {{ form.operating_time }}
+        </div>
+
+        <!-- Номер заказа-наряда -->
+        <div class="form-group">
+            <label for="{{ form.order.id_for_label }}">№ заказ-наряда</label>
+            {{ form.order }}
+        </div>
+
+        <!-- Дата заказ-наряда -->
+        <div class="form-group">
+            <label for="{{ form.order_date.id_for_label }}">Дата заказ-наряда</label>
+            {{ form.order_date }}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Создать</button>
+            <a href="/Service" class="btn btn-info">Назад</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

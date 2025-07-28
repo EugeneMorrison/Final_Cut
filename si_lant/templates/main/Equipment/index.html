@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-12 my-4">
+            <h5 class="text-center">Информация о технике:</h5>
+            <div class="Equipmentd-new p-3">
+                <div class="mb-3">
+                    <a href="/user_index" class="btn" style="background-color:#163E6C; color:#fff; border-radius:8px; padding: 8px 16px;">Вернуться</a>
+                    {% if perms.silant.change_Equipment %}
+                        <a href="/Equipments/edit/{{ Equipment.pk }}" class="btn" style="background-color:#163E6C; color:#fff; border-radius:8px; padding: 8px 16px;">Редактировать</a>
+                    {% endif %}
+                    {% if perms.silant.delete_Equipment %}
+                        <a href="/Equipments/delete/{{ Equipment.pk }}" class="btn" style="background-color:#D20A11; color:#fff; border-radius:8px; padding: 8px 16px;">Удалить запись</a>
+                    {% endif %}
+                </div>
+                <table class="table table-hover" style="border-collapse: separate; border-spacing: 0 8px;">
+                    <tbody>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Зав. № техники:</strong></td>
+                            <td>{{ Equipment.vin }}</td>
+                        </tr>
+                        <tr style="background-color: #EBE6D6;">
+                            <td><strong>Модель техники:</strong></td>
+                            <td><a href="#" data-bs-toggle="modal" data-bs-target="#vehicle_model">
+                                <b>{{ Equipment.vehicle_model.name }}</b></a></td>
+                        </tr>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Модель двигателя:</strong></td>
+                            <td><a href="#" data-bs-toggle="modal" data-bs-target="#engine_model">
+                                <b>{{ Equipment.engine_model.name }}</b></a></td>
+                        </tr>
+                        <tr style="background-color: #EBE6D6;">
+                            <td><strong>Зав. № двигателя:</strong></td>
+                            <td>{{ Equipment.engine_number }}</td>
+                        </tr>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Модель трансмиссии:</strong></td>
+                            <td><a href="#" data-bs-toggle="modal" data-bs-target="#transmission_model">
+                                <b>{{ Equipment.transmission_model.name }}</b></a></td>
+                        </tr>
+                        <tr style="background-color: #EBE6D6;">
+                            <td><strong>Зав. № трансмиссии:</strong></td>
+                            <td>{{ Equipment.transmission_number }}</td>
+                        </tr>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Модель ведущего моста:</strong></td>
+                            <td><a href="#" data-bs-toggle="modal" data-bs-target="#drive_axle_model">
+                                <b>{{ Equipment.drive_axle.name }}</b></a></td>
+                        </tr>
+                        <tr style="background-color: #EBE6D6;">
+                            <td><strong>Зав. № ведущего моста:</strong></td>
+                            <td>{{ Equipment.drive_axle_number }}</td>
+                        </tr>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Модель управляемого моста:</strong></td>
+                            <td><a href="#" data-bs-toggle="modal" data-bs-target="#steerable_axle_model">
+                                <b>{{ Equipment.steering_axle.name }}</b></a></td>
+                        </tr>
+                        <tr style="background-color: #EBE6D6;">
+                            <td><strong>Зав. № управляемого моста:</strong></td>
+                            <td>{{ Equipment.steering_axle_number }}</td>
+                        </tr>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Договор поставки №, дата:</strong></td>
+                            <td>{% if Equipment.supply_agreement %}{{ Equipment.supply_agreement }}{% else %}Отсутствует{% endif %}</td>
+                        </tr>
+                        <tr style="background-color: #EBE6D6;">
+                            <td><strong>Дата отгрузки с завода:</strong></td>
+                            <td>{% if Equipment.shipment_date %}{{ Equipment.shipment_date|date:"d.m.Y" }}{% else %}Отсутствует{% endif %}</td>
+                        </tr>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Грузополучатель:</strong></td>
+                            <td>{% if Equipment.consignee %}{{ Equipment.consignee }}{% else %}Отсутствует{% endif %}</td>
+                        </tr>
+                        <tr style="background-color: #EBE6D6;">
+                            <td><strong>Адрес поставки (эксплуатации):</strong></td>
+                            <td>{% if Equipment.delivery_address %}{{ Equipment.delivery_address }}{% else %}Отсутствует{% endif %}</td>
+                        </tr>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Комплектация (доп. опции):</strong></td>
+                            <td>{% if Equipment.equipment %}{{ Equipment.equipment }}{% else %}Отсутствует{% endif %}</td>
+                        </tr>
+                        <tr style="background-color: #EBE6D6;">
+                            <td><strong>Клиент:</strong></td>
+                            <td>{% if Equipment.user %}{{ Equipment.user }}{% else %}Отсутствует{% endif %}</td>
+                        </tr>
+                        <tr style="background-color: #fff;">
+                            <td><strong>Сервисная организация:</strong></td>
+                            <td>
+                                {% if Equipment.service_company.name %}
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#service_company">
+                                        <b>{{ Equipment.service_company.name }}</b>
+                                    </a>
+                                {% else %}
+                                    Отсутствует
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- Модальные окна -->
+
+    <div class="modal fade" tabindex="-1" id="vehicle_model" aria-hidden="true" aria-labelledby="vehicleModelLabel" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <strong>Описание из справочника:</strong><br><br>
+            {% if Equipment.vehicle_model.description %}
+                {{ Equipment.vehicle_model.description }}
+            {% else %}
+                Описание отсутствует
+            {% endif %}
+            <br><br>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="engine_model" aria-hidden="true" aria-labelledby="engineModelLabel" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <strong>Описание из справочника:</strong><br><br>
+            {% if Equipment.engine_model.description %}
+                {{ Equipment.engine_model.description }}
+            {% else %}
+                Описание отсутствует
+            {% endif %}
+            <br><br>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="transmission_model" aria-hidden="true" aria-labelledby="transmissionModelLabel" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <strong>Описание из справочника:</strong><br><br>
+            {% if Equipment.transmission_model.description %}
+                {{ Equipment.transmission_model.description }}
+            {% else %}
+                Описание отсутствует
+            {% endif %}
+            <br><br>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="drive_axle_model" aria-hidden="true" aria-labelledby="driveAxleModelLabel" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <strong>Описание из справочника:</strong><br><br>
+            {% if Equipment.drive_axle.description %}
+                {{ Equipment.drive_axle.description }}
+            {% else %}
+                Описание отсутствует
+            {% endif %}
+            <br><br>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="steerable_axle_model" aria-hidden="true" aria-labelledby="steerableAxleModelLabel" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <strong>Описание из справочника:</strong><br><br>
+            {% if Equipment.steering_axle.description %}
+                {{ Equipment.steering_axle.description }}
+            {% else %}
+                Описание отсутствует
+            {% endif %}
+            <br><br>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="service_company" aria-hidden="true" aria-labelledby="serviceCompanyLabel" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <strong>Описание из справочника:</strong><br><br>
+            {% if Equipment.service_company.description %}
+                {{ Equipment.service_company.description }}
+            {% else %}
+                Описание отсутствует
+            {% endif %}
+            <br><br>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock content %}

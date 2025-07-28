@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+{% include 'includes/_buttons.html' with 
+    back_url='/Claims' 
+    edit_url='/Claims/edit/'|add:Claim.pk 
+    delete_url='/Claims/delete/'|add:Claim.pk %}
+            <h4 class="mb-4 text-center" style="font-weight: 600;">Данные о рекламации</h4>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <tbody>
+                        <tr><td>Зав. № машины:</td><td>{{ Claim.Equipment }}</td></tr>
+                        <tr>
+                            <td>Сервисная организация:</td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#service_company_modal" class="text-decoration-none">
+                                    <b>{{ Claim.service_company.name }}</b>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr><td>Дата отказа:</td><td>{{ Claim.date_of_refusal }}</td></tr>
+                        <tr><td>Наработка м/час:</td><td>{{ Claim.operating_time }}</td></tr>
+                        <tr><td>Узел отказа:</td><td>{{ Claim.failure_node }}</td></tr>
+                        <tr>
+                            <td>Характер отказа:</td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#denial_type_modal" class="text-decoration-none">
+                                    <b>{{ Claim.denial_type.name }}</b>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Способ восстановления:</td>
+                            <td>
+                                <a href="#" data-toggle="modal" data-target="#recovery_method_modal" class="text-decoration-none">
+                                    <b>{{ Claim.recovery_method }}</b>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr><td>Используемые запасные части:</td><td>{{ Claim.used_details }}</td></tr>
+                        <tr><td>Дата восстановления:</td><td>{{ Claim.date_of_restoration }}</td></tr>
+                        <tr><td>Время простоя техники:</td><td>{{ Claim.equipment_downtime }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Модальные окна -->
+            <div class="modal fade" id="service_company_modal" tabindex="-1" role="dialog" aria-labelledby="serviceCompanyLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content rounded-3">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="serviceCompanyLabel">Сервисная организация</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {% if Claim.service_company.description %}
+                                {{ Claim.service_company.description }}
+                            {% else %}
+                                Описание отсутствует
+                            {% endif %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="denial_type_modal" tabindex="-1" role="dialog" aria-labelledby="denialTypeLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content rounded-3">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="denialTypeLabel">Характер отказа</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {% if Claim.denial_type.description %}
+                                {{ Claim.denial_type.description }}
+                            {% else %}
+                                Описание отсутствует
+                            {% endif %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="recovery_method_modal" tabindex="-1" role="dialog" aria-labelledby="recoveryMethodLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content rounded-3">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="recoveryMethodLabel">Способ восстановления</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {% if Claim.recovery_method.description %}
+                                {{ Claim.recovery_method.description }}
+                            {% else %}
+                                Описание отсутствует
+                            {% endif %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

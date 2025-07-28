@@ -1,0 +1,10 @@
+# Примеры пользователей для тестирования
+admin_user, your_password_here
+manager_user, your_password_here
+service_company_example, your_password_here
+customer_example, your_password_here
+
+# Реальные компании замените на свои
+Компания Пример 1
+Компания Пример 2
+Компания Пример 3

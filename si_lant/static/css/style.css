@@ -1,0 +1,95 @@
+/* Основные цвета бренда */
+:root {
+    --brand-blue: #163E6C;
+    --brand-red: #D20A11;
+    --brand-beige: #EBE6D6;
+}
+
+/* Навигация */
+.navbar {
+    background-color: var(--brand-beige) !important;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: var(--brand-blue) !important;
+    font-family: 'PT Astra Sans', sans-serif;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link.disabled {
+    color: var(--brand-red) !important;
+    font-weight: 600;
+}
+
+/* Кнопки */
+.btn-primary {
+    background-color: var(--brand-blue);
+    border-color: var(--brand-blue);
+    font-family: 'PT Astra Sans', sans-serif;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #0F2B50;
+    border-color: #0F2B50;
+}
+
+.btn-danger {
+    background-color: var(--brand-red);
+    border-color: var(--brand-red);
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background-color: #A20A0A;
+    border-color: #A20A0A;
+}
+
+/* Сообщения (alerts) */
+.alert {
+    font-family: 'PT Astra Sans', sans-serif;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.alert-success {
+    background-color: var(--brand-blue);
+    color: white;
+    border: none;
+}
+
+.alert-danger {
+    background-color: var(--brand-red);
+    color: white;
+    border: none;
+}
+
+/* Футер */
+footer {
+    background-color: var(--brand-blue);
+    color: var(--brand-beige);
+    font-family: 'PT Astra Sans', sans-serif;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+footer h6 {
+    font-weight: 700;
+}
+
+footer p {
+    margin-bottom: 0;
+}
+
+/* Ссылки в футере (если появятся) */
+footer a {
+    color: var(--brand-beige);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Общие стили для контейнера */
+.container {
+    max-width: 960px;
+}

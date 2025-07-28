@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+<h4 class="text-center">Редактировать данные:</h4>
+<div class="col-12 col-md-6 offset-md-3 mt-3">
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="form-group">
+            {{ form.vin.label_tag }}
+            {{ form.vin }}
+        </div>
+
+        <div class="form-group">
+            {{ form.vehicle_model.label_tag }}
+            {{ form.vehicle_model }}
+        </div>
+
+        <div class="form-group">
+            {{ form.engine_model.label_tag }}
+            {{ form.engine_model }}
+        </div>
+
+        <div class="form-group">
+            {{ form.engine_number.label_tag }}
+            {{ form.engine_number }}
+        </div>
+
+        <div class="form-group">
+            {{ form.transmission_model.label_tag }}
+            {{ form.transmission_model }}
+        </div>
+
+        <div class="form-group">
+            {{ form.transmission_number.label_tag }}
+            {{ form.transmission_number }}
+        </div>
+
+        <div class="form-group">
+            {{ form.drive_axle.label_tag }}
+            {{ form.drive_axle }}
+        </div>
+
+        <div class="form-group">
+            {{ form.drive_axle_number.label_tag }}
+            {{ form.drive_axle_number }}
+        </div>
+
+        <div class="form-group">
+            {{ form.steering_axle.label_tag }}
+            {{ form.steering_axle }}
+        </div>
+
+        <div class="form-group">
+            {{ form.steering_axle_number.label_tag }}
+            {{ form.steering_axle_number }}
+        </div>
+
+        <div class="form-group">
+            {{ form.supply_agreement.label_tag }}
+            {{ form.supply_agreement }}
+        </div>
+
+        <div class="form-group">
+            {{ form.shipment_date.label_tag }}
+            {{ form.shipment_date }}
+        </div>
+
+        <div class="form-group">
+            {{ form.consignee.label_tag }}
+            {{ form.consignee }}
+        </div>
+
+        <div class="form-group">
+            {{ form.delivery_address.label_tag }}
+            {{ form.delivery_address }}
+        </div>
+
+        <div class="form-group">
+            {{ form.equipment.label_tag }}
+            {{ form.equipment }}
+        </div>
+
+        <div class="form-group">
+            {{ form.user.label_tag }}
+            {{ form.user }}
+        </div>
+
+        <div class="form-group">
+            {{ form.service_company.label_tag }}
+            {{ form.service_company }}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Сохранить</button>
+            <a class="btn btn-info" href="/user_index">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

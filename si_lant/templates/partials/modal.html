@@ -1,0 +1,89 @@
+<!-- vehicle_model -->
+<div class="modal fade" tabindex="-1" id="vehicle_model_{{Equipment.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5>Модель техники</h5>
+        {% if Equipment.vehicle_model.description %}
+            {{ Equipment.vehicle_model.description }}
+        {% else %}
+            Описание отсутствует
+        {% endif %}
+        <br><br>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- engine_model -->
+<div class="modal fade" tabindex="-1" id="engine_model_{{Equipment.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5>Модель двигателя</h5>
+        {% if Equipment.engine_model.description %}
+            {{ Equipment.engine_model.description }}
+        {% else %}
+            Описание отсутствует
+        {% endif %}
+        <br><br>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- transmission_model -->
+<div class="modal fade" tabindex="-1" id="transmission_model_{{Equipment.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5>Модель трансмиссии</h5>
+        {% if Equipment.transmission_model.description %}
+            {{ Equipment.transmission_model.description }}
+        {% else %}
+            Описание отсутствует
+        {% endif %}
+        <br><br>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- drive_axle_model -->
+<div class="modal fade" tabindex="-1" id="drive_axle_model_{{Equipment.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5>Ведущий мост</h5>
+        {% if Equipment.drive_axle.description %}
+            {{ Equipment.drive_axle.description }}
+        {% else %}
+            Описание отсутствует
+        {% endif %}
+        <br><br>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- steerable_axle_model -->
+<div class="modal fade" tabindex="-1" id="steerable_axle_model_{{Equipment.id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5>Управляемый мост</h5>
+        {% if Equipment.steering_axle.description %}
+            {{ Equipment.steering_axle.description }}
+        {% else %}
+            Описание отсутствует
+        {% endif %}
+        <br><br>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>

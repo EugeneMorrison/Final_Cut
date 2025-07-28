@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block content %}
+<div class="col-12 col-md-12 mt-3">
+    <div class="Equipmentd-new p-4" style="border-radius: 12px;">
+
+        <!-- Навигация -->
+        <div class="d-flex justify-content-around mb-3">
+            <a href="/Equipments" 
+               class="pt-0 h3 text-uppercase nav-link {% if request.path|slice:":11" == '/Equipments' %}font-weight-bold text-info{% else %}text-dark{% endif %}">машины</a>
+            <a href="/Service" 
+               class="pt-0 h3 text-uppercase nav-link {% if request.path|slice:":12" == '/Service' %}font-weight-bold text-info{% else %}text-dark{% endif %}">то</a>
+            <a href="/Claims" 
+               class="pt-0 h3 text-uppercase nav-link {% if request.path|slice:":12" == '/Claims' %}font-weight-bold text-info{% else %}text-dark{% endif %}">рекламации</a>
+        </div>
+
+        <h4 class="text-center my-3" style="font-weight: 600;">Информация о проведенных ТО вашей техники</h4>
+
+        <!-- Фильтры -->
+        <form method="GET" id="filterForm">
+            <div class="d-flex justify-content-between align-items-end mb-3 flex-wrap gap-2">
+                <div>
+                    <span class="select_name">Машина</span>
+                    <select name="cr" class="form-control">
+                        <option value="">---</option>
+                        {% for item in Equipment %}
+                            <option value="{{ item }}" {% if request.GET.cr == item %}selected{% endif %}>&nbsp;{{ item }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <span class="select_name">Сервисная компания</span>
+                    <select name="sc" class="form-control">
+                        <option value="">---</option>
+                        {% for item in service_company %}
+                            <option value="{{ item }}" {% if request.GET.sc == item %}selected{% endif %}>&nbsp;{{ item }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <span class="select_name">Вид ТО</span>
+                    <select name="mt" class="form-control">
+                        <option value="">---</option>
+                        {% for item in Service_type %}
+                            <option value="{{ item }}" {% if request.GET.mt == item %}selected{% endif %}>&nbsp;{{ item }}&nbsp;</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success">Применить</button>
+                    <a title="Очистить фильтры" class="btn btn-secondary" href="/Service">Сбросить</a>
+                </div>
+            </div>
+            
+            <!-- Скрытое поле для сортировки -->
+            <input type="hidden" name="order_by" value="{{ request.GET.order_by }}">
+        </form>
+
+        <!-- Таблица -->
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle" style="background: white; border-radius: 8px;">
+                <thead class="thead-light text-center">
+                    <tr>
+                        <th><a title="Сортировать" href="javascript:void(0)" onclick="sortTable('Service_type')">&#9650; </a>Вид ТО</th>
+                        <th><a title="Сортировать" href="javascript:void(0)" onclick="sortTable('Service_date')">&#9650; </a>Дата проведения ТО</th>
+                        <th><a title="Сортировать" href="javascript:void(0)" onclick="sortTable('operating_time')">&#9650; </a>Наработка, м/час</th>
+                        <th><a title="Сортировать" href="javascript:void(0)" onclick="sortTable('order')">&#9650; </a>№ заказ-наряда</th>
+                        <th><a title="Сортировать" href="javascript:void(0)" onclick="sortTable('order_date')">&#9650; </a>Дата заказ-наряда</th>
+                        <th><a title="Сортировать" href="javascript:void(0)" onclick="sortTable('service_company')">&#9650; </a>Организация, проводившая ТО</th>
+                        <th><a title="Сортировать" href="javascript:void(0)" onclick="sortTable('Equipment')">&#9650; </a>Машина</th>
+                        <th><a title="Сортировать" href="javascript:void(0)" onclick="sortTable('service_company')">&#9650; </a>Сервисная компания</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for Service in Service_list %}
+                        <tr>
+                            <td>{{ Service.Service_type.name }}</td>
+                            <td>{{ Service.Service_date|date:"d.m.Y" }}</td>
+                            <td class="text-center">{{ Service.operating_time }}</td>
+                            <td>{{ Service.order }}</td>
+                            <td>{{ Service.order_date|date:"d.m.Y" }}</td>
+                            <td>{{ Service.service_company.name }}</td>
+                            <td>
+                                {% if Service.equipment %}
+                                    {{ Service.equipment.vin }}
+                                {% else %}
+                                    Оборудование не привязано
+                                {% endif %}
+                            </td>
+                            <td>{{ Service.service_company.name }}</td>
+                            <td class="text-center">
+                                <a href="/Service/{{ Service.pk }}" class="btn btn-info btn-sm">Подробнее</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Кнопки внизу -->
+        <div class="text-center mt-3">
+            <a class="btn btn-primary" href="/Service/new">Добавить запись о ТО</a>
+            {% if request.user|has_group:"manager" or request.user|has_group:"admin" %}
+                <a class="btn btn-primary" href="/lookups" role="button">Редактор справочников</a>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+<script>
+function sortTable(field) {
+    const form = document.getElementById('filterForm');
+    const orderByInput = form.querySelector('input[name="order_by"]');
+    
+    // Проверяем, не является ли текущая сортировка той же самой
+    const currentOrder = orderByInput.value;
+    if (currentOrder === field) {
+        // Если сортируем по тому же полю, добавляем знак минуса для реверса
+        orderByInput.value = '-' + field;
+    } else if (currentOrder === '-' + field) {
+        // Если уже реверс, убираем сортировку
+        orderByInput.value = '';
+    } else {
+        // Новое поле для сортировки
+        orderByInput.value = field;
+    }
+    
+    form.submit();
+}
+
+// Обновляем стрелки сортировки в зависимости от текущего состояния
+document.addEventListener('DOMContentLoaded', function() {
+    const currentOrder = '{{ request.GET.order_by }}';
+    if (currentOrder) {
+        const field = currentOrder.startsWith('-') ? currentOrder.substring(1) : currentOrder;
+        const isDesc = currentOrder.startsWith('-');
+        
+        // Находим соответствующую ссылку и обновляем стрелку
+        const links = document.querySelectorAll('th a[onclick*="' + field + '"]');
+        links.forEach(link => {
+            if (isDesc) {
+                link.innerHTML = link.innerHTML.replace('&#9650;', '&#9660;');
+            }
+        });
+    }
+});
+</script>
+
+{% endblock content %}
